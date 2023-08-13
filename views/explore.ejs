@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><%= title %></title>
+        <link rel='stylesheet' href='/stylesheets/style.css'/>
+        <!-- Mapbox -->
+        <link
+            href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css"
+            rel="stylesheet">
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            #map {
+                position: absolute;
+                top: 11%;
+                bottom: 0;
+                width: 100%;
+            }
+        </style>
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@40,400,0,0"/>
+        
+    </head>
+    <body>
+        <script
+            src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js"></script>
+        <link
+            rel="stylesheet"
+            href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.css"
+            type="text/css">
+        <nav
+            class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 left-0 content-center">
+            <div
+                class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto my-auto p-4">
+                <a href="/" class="flex items-center">
+                    <span
+                        class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Wayfindr</span>
+                </a>
+                <div class="flex md:order-2">
+
+                    <button
+                        data-collapse-toggle="navbar-sticky"
+                        type="button"
+                        class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                        aria-controls="navbar-sticky"
+                        aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg
+                            class="w-5 h-5"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewbox="0 0 17 14">
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M1 1h15M1 7h15M1 13h15"/>
+                        </svg>
+                    </button>
+                </div>
+                <div
+                    class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+                    id="navbar-sticky">
+                    <ul
+                        class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                        <li class="flex justify-center">
+                            <a
+                                href="/"
+                                class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent text-center">
+                                <span class="material-symbols-rounded">
+                                    route
+                                </span>
+                                <p class="text-xs">Route</p>
+                            </a>
+                        </li>
+                        <li class="flex justify-center">
+                            <a
+                                href="/"
+                                class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 text-center"
+                                aria-current="page">
+                                <span class="material-symbols-rounded">
+                                    travel_explore
+                                </span>
+                                <p class="text-xs">Explore</p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div id='map'>
+            <div class='absolute z-10 my-[24px] mx-[24px] py-[24px] px-[24px] w-max bg-white rounded-lg'>
+                <form id='params'>
+                    <h4 class='text-base mb-[12px]'>Choose a travel mode:</h4>
+                    <div class='mb-[12px] mr-[12px] toggle-group align-center'>
+                        <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center">
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <label class='flex items-center pl-3 pr-4'>
+                                    <input class="hidden peer" name='profile' type='radio' value='driving-traffic' checked>
+                                    <div for="profile" class='w-full py-3 ml-2 text-sm font-medium  dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600'>Driving</div>
+                                </label>
+                            </li>
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <label class='flex items-center pl-3 pr-4'>
+                                    <input class="hidden peer" name='profile' type='radio' value='cycling'>
+                                    <div class='w-full py-3 ml-2 text-sm font-medium  dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600'>Cycling</div>
+                                </label>
+                            </li>
+                            <li class="w-full dark:border-gray-600">
+                                <label class='flex items-center pl-3 pr-4'>
+                                    <input class="hidden peer" name='profile' type='radio' value='walking'>
+                                    <div class='w-full py-3 ml-2 text-sm font-medium  dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600'>Walking</div>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <h4 class='text-base mb-[12px]'>Choose a maximum duration:</h4>
+                    <div class='mb-[12px] mr-[12px] toggle-group align-center'>
+                        <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white text-center">
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <label class='flex items-center pl-3 pr-4'>
+                                    <input class="hidden peer" name='duration' type='radio' value='10' checked>
+                                    <div for="duration" class='w-full py-3 ml-2 text-sm font-medium  dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600'>10 min</div>
+                                </label>
+                            </li>
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <label class='flex items-center pl-3 pr-4'>
+                                    <input class="hidden peer" name='duration' type='radio' value='20'>
+                                    <div class='w-full py-3 ml-2 text-sm font-medium  dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600'>20 min</div>
+                                </label>
+                            </li>
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <label class='flex items-center pl-3 pr-4'>
+                                    <input class="hidden peer" name='duration' type='radio' value='30'>
+                                    <div class='w-full py-3 ml-2 text-sm font-medium  dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 '>30 min</div>
+                                </label>
+                            </li>
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <label class='flex items-center pl-3 pr-4'>
+                                    <input class="hidden peer" name='duration' type='radio' value='60'>
+                                    <div class='w-full py-3 ml-2 text-sm font-medium  dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 '>60 min</div>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <h3 class='text-base mb-[12px]'>Click on the map to add a marker</h3>
+                    <div id="pois-output">
+                        <ul id="pois-list" class="flex flex-col max-h-28 overflow-auto">
+                        </ul> 
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script src='/javascripts/exploreMapview.js'></script>
+    </body>
+</html>
