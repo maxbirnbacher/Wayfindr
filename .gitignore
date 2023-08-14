@@ -133,3 +133,6 @@ dist
 .pnp.*
 
 package-lock.json
+
+# token file
+public/javascripts/token.js
