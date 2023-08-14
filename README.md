@@ -1,7 +1,7 @@
 # Wayfindr
 A navigation and route planning webapp build with Mapbox and Node.js 18.
 
-![Screenshot of Route View](<Screenshot_Map>)
+![Screenshot of Route View](<Screenshot_Map.png>)
 
 ## Features/Roadmap
 
