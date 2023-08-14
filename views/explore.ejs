@@ -152,10 +152,16 @@
                         </ul>
                     </div>
                     <h3 class='text-base mb-[12px]'>Click on the map to add a marker</h3>
-                    <div id="pois-output">
-                        <ul id="pois-list" class="flex flex-col max-h-28 overflow-auto">
+                    <div id="pois-output" class="flex flex-col max-h-28 overflow-auto">
+                        <ul id="pois-list">
                         </ul> 
                     </div>
+                    <style>
+                    #pois-output {
+                        max-height: 200px; /* set the maximum height */
+                        overflow: auto; /* add scrollbars when content overflows */
+                    }
+                    </style>
                 </form>
             </div>
         </div>
