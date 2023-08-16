@@ -3,7 +3,6 @@ A navigation and route planning webapp build with Mapbox and Node.js 18.
 
 ![Screenshot of Route View](<Screenshot_Map.png>)
 
-
 ## Features/Roadmap
 
 ### Definitely planned
@@ -16,7 +15,7 @@ A navigation and route planning webapp build with Mapbox and Node.js 18.
 ### Maybe planned
 
 - [ ] Route/POI sharing by GPX file
-- [ ] Implementation of popup with POI information from TripAdvisor (like Apple Maps)
+- [x] Implementation of popup with POI information from Yelp
 - [ ] Implementation of weather information (maybe also forecast)
 
 ### Necessary for future deployment

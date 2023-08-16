@@ -3,10 +3,15 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+require("dotenv").config();
+var favicon = require('serve-favicon');
 
+// routers
 var indexRouter = require('./routes/index');
 var exploreRouter = require('./routes/explore');
+var apiRouter = require('./routes/api');
 
+// app init
 var app = express();
 
 // view engine setup
@@ -19,8 +24,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// routes
 app.use('/', indexRouter);
 app.use('/explore', exploreRouter);
+app.use('/api', apiRouter);
+
+// favicon
+app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

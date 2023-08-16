@@ -35,10 +35,9 @@
         <nav
             class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 left-0 content-center">
             <div
-                class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto my-auto p-4">
+                class="flex flex-wrap items-center justify-between mx-auto my-auto p-4">
                 <a href="/" class="flex items-center">
-                    <span
-                        class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Wayfindr</span>
+                    <img class="absolute self-center h-12 w-auto ml-2" src="/images/Wayfindr-logos_black.png" alt="Wayfindr Logo">
                 </a>
                 <div class="flex md:order-2">
 
@@ -152,10 +151,16 @@
                         </ul>
                     </div>
                     <h3 class='text-base mb-[12px]'>Click on the map to add a marker</h3>
-                    <div id="pois-output">
-                        <ul id="pois-list" class="flex flex-col max-h-28 overflow-auto">
+                    <div id="pois-output" class="flex flex-col max-h-28 overflow-auto">
+                        <ul id="pois-list">
                         </ul> 
                     </div>
+                    <style>
+                    #pois-output {
+                        max-height: 200px; /* set the maximum height */
+                        overflow: auto; /* add scrollbars when content overflows */
+                    }
+                    </style>
                 </form>
             </div>
         </div>
