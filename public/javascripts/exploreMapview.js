@@ -123,7 +123,6 @@ function outputPOIs(pois) {
             }
             
         });
-
         list.appendChild(item);
     });
     // add it to the html
