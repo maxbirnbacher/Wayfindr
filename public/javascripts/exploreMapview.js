@@ -76,31 +76,52 @@ function outputPOIs(pois) {
                 console.log(error);
             }
 
-            // add a popup to the marker using the returned data from the businesses API
-            const popup = new mapboxgl.Popup({offset: 25}).setHTML(
-                `<img class="w-full h-32 object-cover overflow-hidden" src="${data.businesses[0].image_url}" alt="business image">
-                <h3 class="text-base underline">${data.businesses[0].name}</h3>
-                <div class="flex items-center">
-                    <svg class="w-4 h-4 text-yellow-300 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
-                    </svg>
-                    <p class="ml-2 text-sm font-bold text-gray-900 dark:text-white">${data.businesses[0].rating}</p>
-                    <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
-                    <p class="text-sm font-medium text-gray-900 dark:text-white">${data.businesses[0].review_count} reviews</p>
-                </div>
-                <p class="text-sm">Closed: ${data.businesses[0].is_closed}</p>
-                
-                <p class="text-sm">Price: ${data.businesses[0].price}</p>
-                <p class="text-sm">Phone: ${data.businesses[0].phone}</p>
-                <p class="text-sm">Address: ${data.businesses[0].location.address1}, ${data.businesses[0].location.zip_code} ${data.businesses[0].location.city}</p>
-                <br>
-                <a class="text-sm" href="${data.businesses[0].url}" target="_blank">Visit Yelp Site</a>`
-            );
+            
+            let title = `<h3 class="text-base underline">${name}</h3>`;
+            let image = '';
+            let body = '';
 
-            // add the popup to the marker
-            marker.setPopup(popup);
-            // open the popup
-            popup.addTo(map);
+            try {
+                image = `<img class="w-full h-32 object-cover overflow-hidden" src="${data.businesses[0].image_url}" alt="business image">`;
+                body = `<div class="flex items-center">
+                                <svg class="w-4 h-4 text-yellow-300 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                    <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
+                                </svg>
+                                <p class="ml-2 text-sm font-bold text-gray-900 dark:text-white">${data.businesses[0].rating}</p>
+                                <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
+                                <p class="text-sm font-medium text-gray-900 dark:text-white">${data.businesses[0].review_count} reviews</p>
+                            </div>
+                            <p class="text-sm">Closed: ${data.businesses[0].is_closed}</p>
+                            
+                            <p class="text-sm">Price: ${data.businesses[0].price}</p>
+                            <p class="text-sm">Phone: ${data.businesses[0].phone}</p>
+                            <p class="text-sm">Address: ${data.businesses[0].location.address1}, ${data.businesses[0].location.zip_code} ${data.businesses[0].location.city}</p>
+                            <br>
+                            <a class="text-sm" href="${data.businesses[0].url}" target="_blank">Visit Yelp Site</a>`;
+            } catch (error) {
+                console.log(error);
+            }
+            
+
+            // check if the image is undefined or null or empty
+            if (data.businesses == undefined || data.businesses.length == 0 || data.businesses[0].image_url == undefined || data.businesses[0].image_url == null || data.businesses[0].image_url == '') {
+                const popup = new mapboxgl.Popup({offset: 25}).setHTML(
+                    `${title}`
+                );
+                // add the popup to the marker
+                marker.setPopup(popup);
+                // open the popup
+                popup.addTo(map);
+            } else {
+                const popup = new mapboxgl.Popup({offset: 25}).setHTML(
+                    `${image}${title}${body}`
+                );
+                // add the popup to the marker
+                marker.setPopup(popup);
+                // open the popup
+                popup.addTo(map);
+            }
+            
         });
 
         list.appendChild(item);
