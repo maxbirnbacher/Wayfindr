@@ -5,9 +5,9 @@
         <link rel='stylesheet' href='/stylesheets/style.css'/>
         <!-- Mapbox -->
         <link
-            href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css"
+            href="https://api.mapbox.com/mapbox-gl-js/v3.0.0-beta.1/mapbox-gl.css"
             rel="stylesheet">
-        <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+        <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.0-beta.1/mapbox-gl.js" rel="stylesheet"></script>
         <style>
             body {
                 margin: 0;
@@ -70,6 +70,16 @@
                         class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                         <li class="flex justify-center">
                             <a
+                                href="/search"
+                                class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent text-center">
+                                <span class="material-symbols-rounded">
+                                    travel_explore
+                                </span>
+                                <p class="text-xs">Search</p>
+                            </a>
+                        </li>
+                        <li class="flex justify-center">
+                            <a
                                 href="/"
                                 class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent text-center">
                                 <span class="material-symbols-rounded">
@@ -84,7 +94,7 @@
                                 class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 text-center"
                                 aria-current="page">
                                 <span class="material-symbols-rounded">
-                                    travel_explore
+                                    explore
                                 </span>
                                 <p class="text-xs">Explore</p>
                             </a>
@@ -152,7 +162,7 @@
                     </div>
                     <h3 class='text-base mb-[12px]'>Click on the map to add a marker</h3>
                     <div id="pois-output" class="flex flex-col max-h-28 overflow-auto">
-                        <ul id="pois-list">
+                        <ul id="pois-list" class="text-gray-600">
                         </ul> 
                     </div>
                     <style>

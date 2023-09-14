@@ -8,6 +8,8 @@ const map = new mapboxgl.Map({
     zoom: 11.5, // Specify the starting zoom
 });
 
+map.addControl(new mapboxgl.NavigationControl());
+
 // Add geolocate control to the map.
 map.addControl(new mapboxgl.GeolocateControl({
     positionOptions: {
@@ -20,6 +22,7 @@ map.addControl(new mapboxgl.GeolocateControl({
     // is heading.
     showUserHeading: true
 }));
+
 
 // YELP API
 
@@ -46,44 +49,84 @@ function outputPOIs(pois) {
     const list = document.getElementById('pois-list');
     list.innerHTML = '';
     pois.forEach((poi) => {
-        const item = document.createElement('li');
-        let name = poi.properties.name;
-        item.textContent = name;
-        item.classList.add('text-sm');
-        // add the lon and lat as data attributes
-        item.setAttribute('data-lon', poi.geometry.coordinates[0]);
-        item.setAttribute('data-lat', poi.geometry.coordinates[1]);
-        // add a click event listener to each item
-        item.addEventListener('click', async (event) => {
-            // get the name of the clicked item
-            const name = event.target.textContent;
-            // get the lon and lat from the clicked item
-            const lon = event.target.getAttribute('data-lon');
-            const lat = event.target.getAttribute('data-lat');
-            // set the map center to the clicked item
-            map.setCenter([lon, lat]);
-            // remove the marker
-            marker.remove();
-            // add a marker to the clicked item
-            marker.setLngLat([lon, lat]).addTo(map);
-            // call the businesses API
-            let data = await getBusinessDetails(name, lon, lat);
+        // check if there is a name
+        if (poi.properties.name == undefined || poi.properties.name == null || poi.properties.name == '') {
+            console.log('no name');
+        } else {
+            const item = document.createElement('li');
+            let name = poi.properties.name;
+            item.textContent = name;
+            item.classList.add('text-sm');
+            item.classList.add('bg-gray-50');
+            item.classList.add('p-2');
+            item.classList.add('my-1');
+            item.classList.add('rounded-md');
+            item.classList.add('cursor-pointer');
 
-            // try to remove the popup
-            try {
-                marker.getPopup().remove();
-            } catch (error) {
-                console.log(error);
+            // check if it is a restaurant (in class food_and_drink)
+            if (poi.properties.class == 'food_and_drink') {
+                item.innerHTML = `
+                <div class="content-center flex items-center">
+                    <span class="material-symbols-rounded">
+                        restaurant
+                    </span>
+                    <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
+                    <span class="text-left">${name}</span>
+                </div>`;
             }
 
-            
-            let title = `<h3 class="text-base underline">${name}</h3>`;
-            let image = '';
-            let body = '';
+            // add the lon and lat as data attributes
+            item.setAttribute('data-lon', poi.geometry.coordinates[0]);
+            item.setAttribute('data-lat', poi.geometry.coordinates[1]);
+            // add a click event listener to each item
+            item.addEventListener('click', async (event) => {
+                // get the name of the clicked item
+                const name = event.target.textContent;
+                // get the lon and lat from the clicked item
+                const lon = event.target.getAttribute('data-lon');
+                const lat = event.target.getAttribute('data-lat');
+                // set the map center to the clicked item
+                map.setCenter([lon, lat]);
+                // remove the marker
+                marker.remove();
+                // add a marker to the clicked item
+                marker.setLngLat([lon, lat]).addTo(map);
+                // call the businesses API
+                let data = await getBusinessDetails(name, lon, lat);
 
-            try {
-                image = `<img class="w-full h-32 object-cover overflow-hidden" src="${data.businesses[0].image_url}" alt="business image">`;
-                body = `<div class="flex items-center">
+                // try to remove the popup
+                try {
+                    marker.getPopup().remove();
+                } catch (error) {
+                    console.log(error);
+                }
+
+                
+                let title = `
+                    <div class="divide-y divide-solid text-gray-600">
+                        <div class="text-lg">${name}</div>
+                        <div class="py-2">
+                        <button class="text-sm text-center content-center align-middle font-bold text-white bg-blue-500 rounded-md px-2 py-1" onclick="window.open('/route/?destination=${lat},${lon}&travelmode=mapbox/driving-traffic', '_blank')">
+                            <span class="material-symbols-rounded">
+                                directions
+                            </span>
+                            Route
+                        </button>
+                        </div>
+                    </div>`;
+                let image = '';
+                let body = '';
+                let open= '';
+
+                try {
+                    // if closed
+                    if (data.businesses[0].is_closed == true) {
+                        open = `<p class="text-sm bg-gray-50 text-red-500 p-2 my-1 rounded-md">Closed</p>`;
+                    } else {
+                        open = `<p class="text-sm bg-gray-50 text-green-500 p-2 my-1 rounded-md">Open</p>`;
+                    };
+                    image = `<img class="w-full h-32 object-cover rounded-md overflow-hidden" src="${data.businesses[0].image_url}" alt="business image">`;
+                    body = `<div class="flex items-center bg-gray-50 p-2 my-1 rounded-md text-gray-600">
                                 <svg class="w-4 h-4 text-yellow-300 mr-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
                                     <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"/>
                                 </svg>
@@ -91,39 +134,41 @@ function outputPOIs(pois) {
                                 <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
                                 <p class="text-sm font-medium text-gray-900 dark:text-white">${data.businesses[0].review_count} reviews</p>
                             </div>
-                            <p class="text-sm">Closed: ${data.businesses[0].is_closed}</p>
-                            
-                            <p class="text-sm">Price: ${data.businesses[0].price}</p>
-                            <p class="text-sm">Phone: ${data.businesses[0].phone}</p>
-                            <p class="text-sm">Address: ${data.businesses[0].location.address1}, ${data.businesses[0].location.zip_code} ${data.businesses[0].location.city}</p>
-                            <br>
-                            <a class="text-sm" href="${data.businesses[0].url}" target="_blank">Visit Yelp Site</a>`;
-            } catch (error) {
-                console.log(error);
-            }
-            
+                            <div class="text-gray-600">
+                                ${open}
+                                <p class="text-sm bg-gray-50 p-2 my-1 rounded-md">Price: ${data.businesses[0].price}</p>
+                                <p class="text-sm bg-gray-50 p-2 my-1 rounded-md">Phone: ${data.businesses[0].phone}</p>
+                                <p class="text-sm bg-gray-50 p-2 my-1 rounded-md">Address: ${data.businesses[0].location.address1}, ${data.businesses[0].location.zip_code} ${data.businesses[0].location.city}</p>
+                                <a class="text-sm p-2 my-1 rounded-md" href="${data.businesses[0].url}" target="_blank">Visit Yelp Site</a>
+                            </div>`;
+                                
+                } catch (error) {
+                    console.log(error);
+                }
+                
 
-            // check if the image is undefined or null or empty
-            if (data.businesses == undefined || data.businesses.length == 0 || data.businesses[0].image_url == undefined || data.businesses[0].image_url == null || data.businesses[0].image_url == '') {
-                const popup = new mapboxgl.Popup({offset: 25}).setHTML(
-                    `${title}`
-                );
-                // add the popup to the marker
-                marker.setPopup(popup);
-                // open the popup
-                popup.addTo(map);
-            } else {
-                const popup = new mapboxgl.Popup({offset: 25}).setHTML(
-                    `${image}${title}${body}`
-                );
-                // add the popup to the marker
-                marker.setPopup(popup);
-                // open the popup
-                popup.addTo(map);
-            }
-            
-        });
-        list.appendChild(item);
+                // check if the image is undefined or null or empty
+                if (data.businesses == undefined || data.businesses.length == 0 || data.businesses[0].image_url == undefined || data.businesses[0].image_url == null || data.businesses[0].image_url == '') {
+                    const popup = new mapboxgl.Popup({offset: 25}).setHTML(
+                        `${title}`
+                    );
+                    // add the popup to the marker
+                    marker.setPopup(popup);
+                    // open the popup
+                    popup.addTo(map);
+                } else {
+                    const popup = new mapboxgl.Popup({offset: 25}).setHTML(
+                        `${image}${title}${body}`
+                    );
+                    // add the popup to the marker
+                    marker.setPopup(popup);
+                    // open the popup
+                    popup.addTo(map);
+                }
+                
+            });
+            list.appendChild(item);
+        }
     });
     // add it to the html
 
@@ -145,6 +190,7 @@ async function getIso() {
 
     // extract all POIs from the layer in the area of the returned isochrome 
     const pois = await map.queryRenderedFeatures({layers: ['poi-label']});
+    // const pois3 = await map.query
     console.log(pois);
     
     // output the POIs to the HTML

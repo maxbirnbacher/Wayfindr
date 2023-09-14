@@ -10,6 +10,8 @@ var favicon = require('serve-favicon');
 var indexRouter = require('./routes/index');
 var exploreRouter = require('./routes/explore');
 var apiRouter = require('./routes/api');
+var searchRouter = require('./routes/search');
+var routeRouter = require('./routes/route');
 
 // app init
 var app = express();
@@ -28,6 +30,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/explore', exploreRouter);
 app.use('/api', apiRouter);
+app.use('/search', searchRouter);
+app.use('/route', routeRouter);
 
 // favicon
 app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
