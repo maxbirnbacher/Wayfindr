@@ -9,6 +9,8 @@ const map = new mapboxgl.Map({
     zoom: 13
 });
 
+map.addControl(new mapboxgl.NavigationControl());
+
 // Add geolocate control to the map.
 map.addControl(new mapboxgl.GeolocateControl({
     positionOptions: {

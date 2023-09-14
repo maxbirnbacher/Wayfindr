@@ -8,7 +8,14 @@
             href="https://api.mapbox.com/mapbox-gl-js/v3.0.0-beta.1/mapbox-gl.css"
             rel="stylesheet">
         <script src="https://api.mapbox.com/mapbox-gl-js/v3.0.0-beta.1/mapbox-gl.js" rel="stylesheet"></script>
-        <style>
+        <!-- Mapbox Geocoder -->
+        <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+        <link
+            rel="stylesheet"
+            href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css"
+            type="text/css"
+        />
+<style>
             body {
                 margin: 0;
                 padding: 0;
@@ -67,10 +74,12 @@
                     id="navbar-sticky">
                     <ul
                         class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                        
                         <li class="flex justify-center">
                             <a
                                 href="/search"
-                                class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent text-center">
+                                class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 text-center"
+                                aria-current="page">
                                 <span class="material-symbols-rounded">
                                     travel_explore
                                 </span>
@@ -80,7 +89,7 @@
                         <li class="flex justify-center">
                             <a
                                 href="/"
-                                class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 text-center"
+                                class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent text-center"
                                 aria-current="page">
                                 <span class="material-symbols-rounded">
                                     route
@@ -104,6 +113,6 @@
         </nav>
         <div id='map'></div>
         <script src="/javascripts/token.js"></script>
-        <script src='/javascripts/mapview.js'></script>
+        <script src='/javascripts/searchMapview.js'></script>
     </body>
 </html>
